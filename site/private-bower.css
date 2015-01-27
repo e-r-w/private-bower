@@ -125,3 +125,11 @@ footer h4 a {
     -o-animation: fadeOutLeft 0.25s;
     animation: fadeOutLeft 0.25s;
 }
+
+.p20 {
+    padding: 20px;
+}
+
+.p40 {
+    padding: 40px;
+}
