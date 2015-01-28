@@ -14,6 +14,9 @@ privateBowerApp.run(['$rootScope', function($rootScope) {
     $rootScope.$on('addedPackage', function(){
         $rootScope.$broadcast('updatePackages');
     });
+    $rootScope.$on('removedPackage', function(){
+        $rootScope.$broadcast('updatePackages');
+    });
 }]);
 
 var privateBowerControllers = angular.module('privateBowerControllers', []);
@@ -27,6 +30,17 @@ privateBowerControllers.controller('mainController', ['$scope', '$modal', 'packa
           templateUrl: 'partials/_selectPackage.html',
           controller: 'selectPackageController'
       });
+    };
+
+    $scope.removePackage = function(bowerPackage){
+        packageService.removePackage(bowerPackage.name)
+          .then(function success(){
+              $scope.$emit('removedPackage');
+          }, function error(){
+              //TODO error messages
+              console.log('an error has occurred');
+          })
+
     };
 
     $scope.$on('updatePackages', getPackages);
@@ -80,6 +94,11 @@ privateBowerServices.factory('packageService', ['$http', '$q', function($http, $
         },
         getPackages: function(){
             return get('packages');
+        },
+        removePackage: function(packageName){
+            return post('removePackage', {
+                name: packageName
+            });
         }
     };
 
